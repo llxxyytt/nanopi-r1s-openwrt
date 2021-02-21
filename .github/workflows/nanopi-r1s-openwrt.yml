@@ -40,37 +40,37 @@ jobs:
         cp -f "${GITHUB_WORKSPACE}/configs/1806-config.seed" ".config"
         make defconfig
         make -j$[$(nproc)+1]
-        mv -f "bin/targets/sunxi/cortexa53/openwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz" "../openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz"
-        mv -f "bin/targets/sunxi/cortexa53/openwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz" "../openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz"
+        mv -f "bin/targets/sunxi/cortexa53/immortalwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz" "../immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz"
+        mv -f "bin/targets/sunxi/cortexa53/immortalwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz" "../immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz"
         mv -f "bin/targets/sunxi/cortexa53/sha256sums" "../openwrt-18.06-sha256sums"
     - name: Rebuild OpenWrt-18.06 to Collect Error Log
       if: failure()
       run: |
         cd "/home/runner/openwrt"
         make -j1 V=s
-        mv -f "bin/targets/sunxi/cortexa53/openwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz" "../openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz"
-        mv -f "bin/targets/sunxi/cortexa53/openwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz" "../openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz"
-        mv -f "bin/targets/sunxi/cortexa53/sha256sums" "../openwrt-18.06-sha256sums"
+        mv -f "bin/targets/sunxi/cortexa53/immortalwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz" "../immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz"
+        mv -f "bin/targets/sunxi/cortexa53/immortalwrt-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz" "../immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz"
+        mv -f "bin/targets/sunxi/cortexa53/sha256sums" "../immortalwrt-18.06-sha256sums"
     - name: Upload OpenWrt-18.06 SHA256SUM Hash
       uses: actions/upload-artifact@v2
       with:
-        name: openwrt-18.06-sha256sums
-        path: /home/runner/openwrt-18.06-sha256sums
+        name: immortalwrt-18.06-sha256sums
+        path: /home/runner/immortalwrt-18.06-sha256sums
     - name: Upload OpenWrt-18.06 EXT4 Firmware
       uses: actions/upload-artifact@v2
       with:
-        name: openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz
-        path: /home/runner/openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz
+        name: immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz
+        path: /home/runner/immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz
     - name: Upload OpenWrt-18.06 SquashFS Firmware
       uses: actions/upload-artifact@v2
       with:
-        name: openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz
-        path: /home/runner/openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz
+        name: immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz
+        path: /home/runner/immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz
     - name: Upload OpenWrt-18.06 Firmwares to Cloud
       timeout-minutes: 30
       run: |
         cd "/home/runner"
-        zip -j "openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-sdcard.zip" "openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz" "openwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz" "openwrt-18.06-sha256sums"
+        zip -j "immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-sdcard.zip" "immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-ext4-sdcard.img.gz" "immortalwrt-18.06-sunxi-cortexa53-friendlyarm_nanopi-r1s-h5-squashfs-sdcard.img.gz" "immortalwrt-18.06-sha256sums"
         ${GITHUB_WORKSPACE}/scripts/upload_firmware.py  --device-name "FriendlyARM NanoPi R1S (H5)" --device-file "sunxi-cortexa53-friendlyarm_nanopi-r1s-h5" --openwrt-version "18.06" --kernel-version "4.19" --api-id "${{ secrets.TELEGRAM_API_ID }}" --api-hash "${{ secrets.TELEGRAM_API_HASH }}" --bot-token "${{ secrets.TELEGRAM_BOT_TOKEN }}" || exit 0
   Cleanup-Old-Artifacts:
     needs: OpenWrt-18_06
